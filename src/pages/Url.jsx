@@ -4,11 +4,21 @@ import { FaCheckCircle } from "react-icons/fa";
 
 
 const Url = () => {
-
-  const [copy,setCopy]=useState(false)
-
+// copy , setCopy useState starts
+const [copy,setCopy]=useState(false)
+// handleCopy function starts
 const handleCopy = ()=>{
+  //  copy set to true
    setCopy(!copy)
+  //  copy set to false after 2.5seconds
+   setTimeout(()=>setCopy(copy),2500)
+  //  copy text
+  const copiedText = document.querySelector('.copiedText')
+  //  Copy the text inside the text field
+ navigator.clipboard.writeText(copiedText.textContent);
+
+
+  console.log('text coppied')
 }
 
   return (
@@ -21,7 +31,9 @@ const handleCopy = ()=>{
             </form>
             <h2 className='font-normal font-roboto text-[12px] lg:text-[14px] text-gray-300 my-8'>Long url</h2>
             <div className='flex justify-between'>
-             <a target='_blank' className='font-normal font-roboto text-[14px] lg:text-[16px] text-gray-500 ' href="#">Shor url</a>
+             <a target='_blank' className='font-normal font-roboto text-[14px] lg:text-[16px] text-gray-500 ' href="#">Short url
+              <span className='ml-4 font-medium copiedText'>Url link here</span>
+             </a>
              {
               copy?
                   <button><FaCheckCircle className='text-green-600 cursor-pointer'/></button>
