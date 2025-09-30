@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react'
 import { FaCopy } from "react-icons/fa";
 import { FaCheckCircle } from "react-icons/fa";
@@ -35,11 +36,14 @@ const handleCopy = ()=>{
   console.log('text coppied')
 }
 // handleShort function Starts
-const handleShort =()=>{
+const handleShort =(e)=>{
+  e.preventDefault()
  if(!longUrl) return setMyError('Alert input is empty')
   setMyError('')
  
- 
+ axios.post('http://localhost:8000/url/sendlongurl',{longUrl})
+ .then((res)=>console.log(res))
+ .catch((err)=>console.log(err))
  setDisplay(longUrl)
  setLongUrl('')
 }
@@ -49,19 +53,19 @@ const handleShort =()=>{
         <div className='w-[500px] bg-[#b2bbce] mx-auto p-4 rounded-lg shadow-[0px_0px_0px_1px_rgba(0,0,0,0.06),0px_1px_1px_-0.5px_rgba(0,0,0,0.06),0px_3px_3px_-1.5px_rgba(0,0,0,0.06),_0px_6px_6px_-3px_rgba(0,0,0,0.06),0px_12px_12px_-6px_rgba(0,0,0,0.06),0px_24px_24px_-12px_rgba(0,0,0,0.06)]'>
             <h2 className=' text-[14px] lg:text-xl font-semibold text-gray-500 font-roboto'>Short Url</h2>
              <p className='text-[12px] text-red-400 font-roboto mt-3'>{myerror}</p>
-            <form className='w-full border py-2 px-3 rounded-[5px] mt-8 bg-gray-100 flex justify-between'>
+            <form onSubmit={handleShort} className='w-full border py-2 px-3 rounded-[5px] mt-8 bg-gray-100 flex justify-between'>
             <input 
             value={longUrl}
             onChange={(e)=>setLongUrl(e.target.value)}
             type="text" className='border-none outline-none lg:text-xl text-[13px]' placeholder='Enter Url'/>
             <button
-            onClick={handleShort}
+           
             className='active:scale-[1.1] cursor-pointer font-roboto font-medium text-[14px] lg:text-[16px] py-2 px-5 bg-gray-300 rounded-[3px]'>Submit</button>
             </form>
             
             <h2 className='font-normal font-roboto text-[12px] lg:text-[14px] text-gray-300 my-8'>Long url <span className='ml-3 overflow-hidden '>{display}</span></h2>
            
-            <div className='flex justify-between'>
+            <div className='flex justify-between pr-2'>
              <a target='_blank' className='font-normal font-roboto text-[14px] lg:text-[16px] text-gray-500 ' href="#">Short url
               <span className='ml-4 font-medium copiedText'>Url link here</span>
              </a>
@@ -69,7 +73,7 @@ const handleShort =()=>{
               copy?
                   <button><FaCheckCircle className='text-green-600 cursor-pointer'/></button>
                   :
-                  <button onClick={handleCopy}><FaCopy className='text-gray-600 cursor-pointer'/></button>
+                  <button className='active:scale-[1.2]' onClick={handleCopy}><FaCopy className=' text-gray-600 cursor-pointer'/></button>
                   
              }
             </div>
