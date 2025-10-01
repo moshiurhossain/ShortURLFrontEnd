@@ -7,15 +7,14 @@ import { FaCheckCircle } from "react-icons/fa";
 const Url = () => {
 // copy , setCopy useState starts
 const [copy,setCopy]=useState(false)
-
 // short url useState starts
 const [longUrl,setLongUrl]=useState('')
-
 // error useState starts
 const [myerror,setMyError]=useState('')
-
 // displaylongUrl useState starts
 const [display,setDisplay]=useState('')
+// url response useState
+const [urlResponse,setUrlResponse]=useState('')
 
 // handleCopy function starts
 const handleCopy = ()=>{
@@ -41,12 +40,14 @@ const handleShort =(e)=>{
  if(!longUrl) return setMyError('Alert input is empty')
   setMyError('')
  
- axios.post('http://localhost:8000/url/sendlongurl',{longUrl})
- .then((res)=>console.log(res))
+axios.post('http://localhost:8000/url/sendlongurl',{longUrl})
+ .then((res)=> setUrlResponse(res.data.shortUrl))
  .catch((err)=>console.log(err))
  setDisplay(longUrl)
  setLongUrl('')
+ console.log(data)
 }
+
 
   return (
     <div className='bg-[#128296] h-screen dark:bg-[#2b2929] py-5 flex justify-center items-center'>
@@ -62,12 +63,14 @@ const handleShort =(e)=>{
            
             className='active:scale-[1.1] cursor-pointer font-roboto font-medium text-[14px] lg:text-[16px] py-2 px-5 bg-gray-300 rounded-[3px]'>Submit</button>
             </form>
-            
-            <h2 className='font-normal font-roboto text-[12px] lg:text-[14px] text-gray-300 my-8'>Long url <span className='ml-3 overflow-hidden '>{display}</span></h2>
+            <div className='flex items-center font-normal font-roboto text-[12px] lg:text-[14px] text-gray-300' >
+
+            <h2 className=' my-8'>Long url </h2><div className='ml-3 overflow-x-hidden w-[330px]'>{display}</div>
+            </div>
            
             <div className='flex justify-between pr-2'>
              <a target='_blank' className='font-normal font-roboto text-[14px] lg:text-[16px] text-gray-500 ' href="#">Short url
-              <span className='ml-4 font-medium copiedText'>Url link here</span>
+              <span className=' font-medium copiedText ml-5'>{urlResponse}</span>
              </a>
              {
               copy?
